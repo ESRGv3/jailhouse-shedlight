@@ -19,7 +19,7 @@ endif
 
 MAKEFLAGS += --no-print-directory
 
-prefix		?= /usr/local
+prefix		?= /usr/
 exec_prefix	?= $(prefix)
 sbindir		?= $(exec_prefix)/sbin
 libexecdir	?= $(exec_prefix)/libexec

@@ -55,7 +55,7 @@ tool_inmates_install: $(DESTDIR)$(libexecdir)/jailhouse
 install: modules_install firmware_install tool_inmates_install
 	$(Q)$(MAKE) -C tools $@ src=.
 ifeq ($(strip $(PYTHON_PIP_USABLE)), yes)
-	$(PIP) install --upgrade --force-reinstall $(PIP_ROOT) .
+	$(PIP) install --upgrade --force-reinstall --prefix=usr $(PIP_ROOT) .
 endif
 
 .PHONY: modules_install install clean firmware_install modules tools docs \
