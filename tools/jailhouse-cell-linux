@@ -345,7 +345,7 @@ class ARMCommon:
         self._dtb_addr = ram_regions[0].virt_start
         if self._dtb_addr == 0:
             # leave room for the loader
-            self._dtb_addr += 0x2000
+            self._dtb_addr += 0x20000
         self._kernel_addr = page_align(self._dtb_addr + dtb_size,
                                        self.kernel_alignment())
         self._kernel_addr += kernel_load_offset
