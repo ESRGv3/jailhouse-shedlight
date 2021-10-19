@@ -19,12 +19,13 @@
 #include <jailhouse/string.h>
 #include <jailhouse/unit.h>
 #include <jailhouse/utils.h>
+#include <jailhouse/coloring.h>
 #include <asm/control.h>
 #include <asm/spinlock.h>
 
 enum msg_type {MSG_REQUEST, MSG_INFORMATION};
 enum failure_mode {ABORT_ON_ERROR, WARN_ON_ERROR};
-enum management_task {CELL_START, CELL_SET_LOADABLE, CELL_DESTROY};
+enum management_task {CELL_CREATE, CELL_START, CELL_SET_LOADABLE, CELL_DESTROY};
 
 /** System configuration as used while activating the hypervisor. */
 struct jailhouse_system *system_config;
@@ -709,12 +710,13 @@ static int cell_set_loadable(struct per_cpu *cpu_data, unsigned long id)
 	pci_cell_reset(cell);
 
 	/* map all loadable memory regions into the root cell */
-	for_each_mem_region(mem, cell->config, n)
+	for_each_mem_region(mem, cell->config, n) {
 		if (mem->flags & JAILHOUSE_MEM_LOADABLE) {
 			err = remap_to_root_cell(mem, ABORT_ON_ERROR);
 			if (err)
 				goto out_resume;
 		}
+	}
 
 	config_commit(NULL);
 
