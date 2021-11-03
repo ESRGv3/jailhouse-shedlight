@@ -27,11 +27,19 @@ OBJCOPYFLAGS := -O binary --remove-section=.note.gnu.property
 
 CONFIGS = $(shell cd $(src); ls $(SRCARCH)/*.c)
 
+ifneq ($(CONFIG_REPO),)
+CONFIGS += $(shell cd $(src); ls $(CONFIG_REPO)/*.c)
+endif
+$(info $(CONFIGS))
+
 always-y := $(CONFIGS:.c=.cell)
 
 targets += $(CONFIGS:.c=.o) $(CONFIGS:.c=.cell)
 
 DTS = $(shell cd $(src); ls $(SRCARCH)/dts/*.dts 2>/dev/null)
+ifneq ($(CONFIG_REPO),)
+DTS += $(shell cd $(src); ls $(CONFIG_REPO)/dts/*.dts 2>/dev/null)
+endif
 always-y += $(DTS:.dts=.dtb)
 targets += $(DTS:.dts=.dtb)
 
