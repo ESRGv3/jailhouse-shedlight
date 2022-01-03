@@ -47,16 +47,11 @@ jailhouse_get_colored_offs(__u64 offset,
 			   const struct jailhouse_cache *coloring,
 			   __u32 max_cache_colors)
 {
-	__u64 scaled_offs = (offset / JAILHOUSE_MIN_COLORED_SIZE) *
-		max_cache_colors;
-	/* full ways-size chunks */
-	__u64 colered_block = scaled_offs / coloring->size;
+	__u64 colered_block = (offset / JAILHOUSE_MIN_COLORED_SIZE) / coloring->size;
+	__u64 remainder = (offset / JAILHOUSE_MIN_COLORED_SIZE) % coloring->size;
 
-	/* remainder */
-	colered_block += coloring->start + scaled_offs % coloring->size;
-
-	return colered_block * JAILHOUSE_MIN_COLORED_SIZE +
-		offset % JAILHOUSE_MIN_COLORED_SIZE;
+	return (colered_block * max_cache_colors * JAILHOUSE_MIN_COLORED_SIZE) +
+		((remainder + coloring->start) * JAILHOUSE_MIN_COLORED_SIZE);
 }
 
 #endif /* !_JAILHOUSE_CACHE_COLORING_H */

@@ -145,15 +145,17 @@ int coloring_paging_init(unsigned int llc_way_size)
 int coloring_cell_init(struct cell *cell)
 {
 	const struct jailhouse_cache *cache;
-	int counter = 0;
-	int i;
+	unsigned int counter = 0;
+	unsigned int i;
 
 	memset(cell->arch.color_bitmask, 0,
 		sizeof(unsigned long) * COLOR_BITMASK_SIZE);
 
 	/* Root cell is currently not supported */
-	if (cell == &root_cell)
+	if (cell == &root_cell) {
+		*cell->arch.color_bitmask = COLORING_MAX_NUM - 1;
 		return 0;
+	}
 
 	for_each_cache_region(cache, cell->config, counter) {
 		if ((cache->start + cache->size) > COLORING_MAX_NUM ||
