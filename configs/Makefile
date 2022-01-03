@@ -27,10 +27,12 @@ OBJCOPYFLAGS := -O binary --remove-section=.note.gnu.property
 
 CONFIGS = $(shell cd $(src); ls $(SRCARCH)/*.c)
 
+CONFIG_REPO:=$(src)/../../configs
+override CONFIG_REPO:=$(shell realpath --relative-to=$(src) $(CONFIG_REPO))
+
 ifneq ($(CONFIG_REPO),)
 CONFIGS += $(shell cd $(src); ls $(CONFIG_REPO)/*.c)
 endif
-$(info $(CONFIGS))
 
 always-y := $(CONFIGS:.c=.cell)
 
