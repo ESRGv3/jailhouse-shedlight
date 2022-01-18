@@ -44,7 +44,7 @@ int smccc_discover(void)
 #ifdef __aarch64__
 	/* Check if we have SDEI (ARMv8 only) */
 	ret = smc(SDEI_VERSION);
-	if (ret >= ARM_SMCCC_VERSION_1_0) {
+	if (ret >= ARM_SMCCC_VERSION_1_0 && CONFIG_IRQ_PASSTHRU) {
 		if (sdei_probed && !sdei_available)
 			return trace_error(-EIO);
 		sdei_available = true;
