@@ -939,6 +939,7 @@ static int cpu_get_info(struct per_cpu *cpu_data, unsigned long cpu_id,
  *
  * @note If @c arg1 and @c arg2 are valid depends on the hypercall code.
  */
+extern unsigned long sgi_time;
 long hypercall(unsigned long code, unsigned long arg1, unsigned long arg2)
 {
 	struct per_cpu *cpu_data = this_cpu_data();
@@ -968,6 +969,8 @@ long hypercall(unsigned long code, unsigned long arg1, unsigned long arg2)
 			return trace_error(-EPERM);
 		printk("%c", (char)arg1);
 		return 0;
+	case 43:
+		return sgi_time;
 	default:
 		return -ENOSYS;
 	}

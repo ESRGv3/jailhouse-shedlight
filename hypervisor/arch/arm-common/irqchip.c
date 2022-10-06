@@ -221,6 +221,7 @@ bool irqchip_has_pending_irqs(void)
 	return irqchip.has_pending_irqs();
 }
 
+unsigned long sgi_time;
 void irqchip_set_pending(struct public_per_cpu *cpu_public, u16 irq_id)
 {
 	struct pending_irqs *pending = &cpu_public->pending_irqs;
@@ -229,6 +230,7 @@ void irqchip_set_pending(struct public_per_cpu *cpu_public, u16 irq_id)
 	unsigned int new_tail;
 
 	if (sdei_available) {
+        //printk("injecting through sdei");
 		irqchip_send_sgi(cpu_public->cpu_id, irq_id);
 		return;
 	}
@@ -265,8 +267,10 @@ void irqchip_set_pending(struct public_per_cpu *cpu_public, u16 irq_id)
 	 */
 	if (local_injection)
 		irqchip.enable_maint_irq(true);
-	else
+	else {
+        arm_read_sysreg(CNTPCT_EL0, sgi_time);
 		irqchip_send_sgi(cpu_public->cpu_id, SGI_INJECT);
+    }
 }
 
 void irqchip_inject_pending(void)
