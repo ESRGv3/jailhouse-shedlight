@@ -153,6 +153,39 @@ struct jailhouse_memory {
 			((dev_id == 1) ? JAILHOUSE_MEM_WRITE : 0),	\
 	}
 
+#define JAILHOUSE_SHMEM_REGIONS(start, _size)                     \
+	{                                                             \
+		.phys_start = start,                                      \
+		.virt_start = start,                                      \
+		.size = 0x1000,                                           \
+		.flags = JAILHOUSE_MEM_READ,                              \
+	},                                                            \
+    {                                                             \
+		.phys_start = (start) + 0x1000,                           \
+		.virt_start = (start) + 0x1000,                           \
+		.size = _size,                                            \
+		.flags = JAILHOUSE_MEM_READ | JAILHOUSE_MEM_WRITE,        \
+	},                                                            \
+	{ 0 },                                                        \
+	{ 0 }
+
+#define JAILHOUSE_SHMEM_REGIONS_COL(start, _size)                 \
+	{                                                             \
+		.phys_start = start,                                      \
+		.virt_start = start,                                      \
+		.size = 0x1000,                                           \
+		.flags = JAILHOUSE_MEM_READ | JAILHOUSE_MEM_COLORED       \
+	},                                                            \
+    {                                                             \
+		.phys_start = (start) + 0x1000,                           \
+		.virt_start = (start) + 0x1000,                           \
+		.size = _size,                                            \
+		.flags = JAILHOUSE_MEM_READ | JAILHOUSE_MEM_WRITE |       \
+            JAILHOUSE_MEM_COLORED                                 \
+	},                                                            \
+	{ 0 },                                                        \
+	{ 0 }
+
 #define JAILHOUSE_MEMORY_IS_SUBPAGE(mem)	\
 	((mem)->virt_start & PAGE_OFFS_MASK || (mem)->size & PAGE_OFFS_MASK)
 
