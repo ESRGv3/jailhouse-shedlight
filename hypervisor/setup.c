@@ -200,6 +200,9 @@ static void init_late(void)
  * This is the architecture independent C entry point, which is called by
  * arch_entry. This routine is called on each CPU when initializing Jailhouse.
  */
+
+unsigned long long boot_counter = 0xdeadbeef;
+
 int entry(unsigned int cpu_id, struct per_cpu *cpu_data)
 {
 	static volatile bool activate;
@@ -263,6 +266,9 @@ int entry(unsigned int cpu_id, struct per_cpu *cpu_data)
 
 	if (master)
 		printk("Activating hypervisor\n");
+
+    if (master)
+		printk("boottime-hyp %llu\n", boot_counter);
 
 	/* point of no return */
 	arch_cpu_activate_vmm();

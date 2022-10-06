@@ -43,6 +43,11 @@ vmexits_smccc:
 	.text
 	.globl arch_entry
 arch_entry:
+
+    adr x16, boot_counter
+    mrs x17, cntpct_el0
+    str x17, [x16]  
+
 	/*
 	 * x0: cpuid
 	 *
