@@ -96,6 +96,7 @@ struct console_state {
 DEFINE_MUTEX(jailhouse_lock);
 bool jailhouse_enabled;
 void *hypervisor_mem;
+unsigned int max_cache_colors;
 
 static struct device *jailhouse_dev;
 static unsigned long hv_core_and_percpu_size;
@@ -574,6 +575,10 @@ static int jailhouse_cmd_enable(struct jailhouse_system __user *arg)
 		config->platform_info.x86.apic_khz =
 			*lapic_timer_period_sym / (1000 / HZ);
 #endif
+
+	max_cache_colors = config->platform_info.max_cache_colors;
+	if (max_cache_colors == 0)
+		max_cache_colors = 1;
 
 	err = jailhouse_cell_prepare_root(&config->root_cell);
 	if (err)
