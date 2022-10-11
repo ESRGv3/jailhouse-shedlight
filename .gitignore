@@ -33,3 +33,6 @@ hypervisor/arch/*/include/generated
 ci/out
 ci/*.tar.xz
 *.pyc
+build
+install
+pyjailhouse-egg.info

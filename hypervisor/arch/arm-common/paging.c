@@ -153,9 +153,11 @@ static const struct paging arm_paging[] = {
 	{
 		ARM_PAGING_COMMON
 		/* Block entry: 1GB */
-		.page_size = 1024 * 1024 * 1024,
 		.get_entry = arm_get_l1_entry,
+#if !CONFIG_NO_SUPERPAGES
+		.page_size = 1024 * 1024 * 1024,
 		.set_terminal = arm_set_l1_block,
+#endif
 		.get_phys = arm_get_l1_phys,
 
 		.set_next_pt = arm_set_l12_table,
@@ -165,9 +167,11 @@ static const struct paging arm_paging[] = {
 	{
 		ARM_PAGING_COMMON
 		/* Block entry: 2MB */
-		.page_size = 2 * 1024 * 1024,
 		.get_entry = arm_get_l2_entry,
+#if !CONFIG_NO_SUPERPAGES
+		.page_size = 2 * 1024 * 1024,
 		.set_terminal = arm_set_l2_block,
+#endif
 		.get_phys = arm_get_l2_phys,
 
 		.set_next_pt = arm_set_l12_table,
@@ -195,9 +199,11 @@ static const struct paging arm_s2_paging_alt[] = {
 	{
 		ARM_PAGING_COMMON
 		/* Block entry: 2MB */
-		.page_size = 2 * 1024 * 1024,
 		.get_entry = arm_get_l2_entry,
+#if !CONFIG_NO_SUPERPAGES
+		.page_size = 2 * 1024 * 1024,
 		.set_terminal = arm_set_l2_block,
+#endif
 		.get_phys = arm_get_l2_phys,
 
 		.set_next_pt = arm_set_l12_table,

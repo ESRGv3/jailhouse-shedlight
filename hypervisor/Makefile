@@ -33,7 +33,7 @@ KBUILD_CFLAGS := -g -Os -Werror -Wall -Wextra -Wno-unused-parameter \
 		 -Wundef -Wdeprecated \
 		 -fno-strict-aliasing -fno-pic -fno-common \
 		 -fno-stack-protector -fno-builtin-ffsl -ffreestanding \
-		 -D__LINUX_COMPILER_TYPES_H
+		 -D__LINUX_COMPILER_TYPES_H -Wno-error=unused-function
 
 include $(src)/arch/$(SRCARCH)/Makefile
 
