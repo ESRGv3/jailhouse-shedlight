@@ -133,9 +133,20 @@ else
 $(eval $(call BUILD_JAILHOUSE_template,))
 endif
 
+
+
+ifneq ($(MAKECMDGOALS),)
 cloc_objs:=$(filter %.o, $(HYPERVISOR_OBJS)) $(shell ar -t $(filter %.a, $(HYPERVISOR_OBJS)))
 cloc_deps:=$(foreach obj, $(cloc_objs), $(wildcard $(dir $(obj)).$(notdir $(obj).cmd)))
 cloc_headers:=$(shell cat $(cloc_deps) | grep -o "../\S*\.h" | sort | uniq)
 cloc_sources:=$(foreach obj, $(cloc_objs), $(wildcard $(patsubst %.o, %.c, $(obj))))
 cloc_sources+=$(foreach obj, $(cloc_objs), $(wildcard $(patsubst %.o, %.S, $(obj))))
 $(foreach src, $(cloc_sources) $(cloc_headers), $(shell echo $(src) >> ../../cloc.txt))
+
+cloc:
+	@cloc --quiet --by-file --force-lang-def=lang_defs.txt ../../cloc.txt
+	@rm ../../cloc.txt
+
+.PHONY: cloc
+
+endif
