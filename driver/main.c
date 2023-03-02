@@ -924,10 +924,6 @@ static int __init jailhouse_init(void)
 {
 	int err;
 
-    u64 boottime = 0xdeadbeef;
-    asm("mrs %0, CNTPCT_EL0" : "=r"(boottime));
-    printk("boottime-driver %llu\n", boottime);
-
 #if defined(CONFIG_KALLSYMS_ALL) && LINUX_VERSION_CODE < KERNEL_VERSION(5,7,0)
 #define __RESOLVE_EXTERNAL_SYMBOL(symbol)			\
 	symbol##_sym = (void *)kallsyms_lookup_name(#symbol);	\
